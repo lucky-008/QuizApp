@@ -49,7 +49,7 @@ const ResultSchema=new mongoose.Schema({
         enum:performanceEnum,
         default:"Needs Work"},
     },{
-        timestamps
+        timestamps :true
     });
 
     ResultSchema.pre('save',function(next){
