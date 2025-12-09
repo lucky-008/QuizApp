@@ -5,9 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { Award, LogIn, LogOut, Menu, X } from 'lucide-react';
 import { useEffect } from "react";
 const Navbar = ({ logoSrc }) => {
-
-
     const navigate = useNavigate();
+
     
     const [menuOpen, setMenuOpen] = useState(false);
     const [LoggedIn, setLoggedIn] = useState(() => {
