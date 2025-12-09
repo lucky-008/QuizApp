@@ -4,8 +4,11 @@ import {questionsData } from '../assets/dummyData'
 import { useState } from 'react';
 import { useRef } from 'react';
 import { useEffect } from 'react';
-import { Award, BookOpen, Code, Coffee, Cpu, Database, Globe, Layout, Sparkles, Star, Target, Terminal, Trophy, Zap } from 'lucide-react';
-import { set } from 'mongoose';
+import { Award, BookOpen, Code, Coffee, Cpu, Database, Globe, Layout, Sparkles, Star, Target, Terminal, Trophy, X, Zap } from 'lucide-react';
+// import { set } from 'mongoose';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+const API_BASE ="http://localhost:4000/";
 
 const Sidebar = () => {
   const [selectedTech, setSelectedTech] = useState(null);
@@ -236,14 +239,127 @@ const Sidebar = () => {
 
   const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
+  getAuthHeader = () => {
+    const token = localStorage.getItem('token');
+    localStorage.getItem('authToken')|| null;
+    return token ?  {
+      Authorization: `Bearer ${token}`}: {};
+    
+  };
+   
+  const submitResult = async () => {
+    if (submittedRef.current) return;
+    if (!selectedTech || !selectedLevel) return;
+     const payload = {
+      title: `${selectedTech.toUpperCase()} - ${
+        selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)
+      } quiz`,
+      technology: selectedTech,
+      level: selectedLevel,
+      totalQuestions: score.total,
+      correct: score.correct,
+      wrong: score.total - score.correct,
+    };
+
+
+    try {
+      submittedRef.current = true;
+      toast.info("Submitting your result...");
+      const res = await axios.post(`${API_BASE}/api/results`, payload, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAuthHeader(),
+        },
+        timeout: 10000,
+      });
+      if(res.data && res.data.success)  {
+        toast.success("Result submitted successfully!");
+      } else {
+        toast.error("Failed to submit result. Please try again.");
+        submitResult.current = false;
+      }
+         }  catch (err) {
+      submittedRef.current = false;
+      console.error(
+        "Error saving result:",
+        err?.response?.data || err.message || err
+      );
+      toast.error("Could not save result. Check console or network.");
+    }
+  };
+   useEffect(() => {
+    if (showResults) {
+      submitResult();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showResults]);
+
   
 
 
   return (
     <div className={sidebarStyles.pageContainer}>
-        {}
+        {isSidebarOpen && (
+          <div onClick={() => window.innerWidth < 768 && setIsSidebarOpen(false)}
+            className={sidebarStyles.mobileOverlay}></div>
+        )}
+        <div className={sidebarStyles.mainContainer}>
+          <aside ref={asideRef} className={`${sidebarStyles.sidebar} ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+
+            <div className={sidebarStyles.sidebarHeader}>
+              <div className={sidebarStyles.headerDecoration1}></div>
+              <div className={sidebarStyles.headerDecoration2}></div>
+              <div className={sidebarStyles.headerContent}>
+                <div className={sidebarStyles.logoContainer}>
+                  <div className={sidebarStyles.logoIcon}>
+                    <BookOpen size={28}  className='text-indigo-700'/>
+                  </div>
+             
+              <div>
+                <h1 className={sidebarStyles.logoTitle}>QuizMaster</h1>
+                <p className={sidebarStyles.logoSubtitle}>Test Your Knowledge</p>
+                 </div>
+              </div>
+              <button onClick={toggleSidebar} className={sidebarStyles.closeButton}>
+                < X size={20} />
+
+
+              </button>
+              </div>
+            </div>
+
+            <div className={sidebarStyles.sidebarContent}>
+              <div className={sidebarStyles.technologiesHeader} >
+                <h2 className={sidebarStyles.technologiesTitle}>Technologies</h2>
+                <span className={sidebarStyles.technologiesCount}>{technologies.length} options
+
+                </span>
+
+                </div>
+                 {technologies.map((tech) => (
+                  <div
+                    key={tech.id} className={sidebarStyles.techItem} data-tech={tech.id}>
+                    <button
+                      onClick={() => handleTechSelect(tech.id)}
+                      className={`${sidebarStyles.techButton} ${selectedTech === tech.id ? `${tech.color} ${sidebarStyles.techButtonSelected}`:
+                      sidebarStyles.techButtonNormal
+                      }`}>
+                        <div>
+                          
+                        </div>
+                    </button>
+                  </div>
+                ))}
+                </div>
+                
+          </aside>
+
+
+
+          </div>
+           
     </div>
-  )
+  );
 }
 
 export default Sidebar
