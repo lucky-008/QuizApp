@@ -206,29 +206,19 @@ export const sidebarStyles = {
   mainContainer: "flex xl:h-screen xl:overflow-y-hidden",
   
   // Sidebar styles
-  sidebar: `
-  fixed top-0 left-0 h-screen w-80
-  bg-white shadow-lg rounded-r-2xl overflow-y-auto border-r border-gray-200 flex flex-col
-  z-50
-  transform transition-transform duration-300 ease-in-out
-  -translate-x-full        /* hidden on mobile */
-  md:translate-x-0         /* visible on desktop */
-`,
-
-
+  sidebar: "fixed h-screen z-40 top-0 left-0 w-80 transform transition-transform duration-300 ease-in-out bg-white shadow-lg rounded-r-2xl overflow-y-auto border-r border-gray-200 md:relative md:translate-x-0 md:flex md:flex-col",
   
   // Sidebar header
   sidebarHeader: "top-0 z-20 p-6 bg-gradient-to-r from-blue-100 to-indigo-100 text-slate-800 relative overflow-hidden",
-  headerDecoration1: "absolute top-0 right-0 w-32 h-32 -mt-16 -mr-16 bg-white opacity-20 rounded-full z-0",
-headerDecoration2: "absolute bottom-0 left-0 w-24 h-24 -mb-12 -ml-12 bg-blue-200 opacity-40 rounded-full z-0",
-headerContent: "flex font-[pacifico] items-center justify-between relative z-10",
-  logoContainer: "flex items-center space-x-3 z-20",
-
+  headerDecoration1: "absolute top-0 right-0 w-32 h-32 -mt-16 -mr-16 bg-white opacity-20 rounded-full",
+  headerDecoration2: "absolute bottom-0 left-0 w-24 h-24 -mb-12 -ml-12 bg-blue-200 opacity-40 rounded-full",
+  headerContent: "flex font-[pacifico] items-center justify-between relative z-10",
+  logoContainer: "flex items-center space-x-3",
   logoIcon: "p-2 bg-white/40 rounded-xl backdrop-blur-sm border border-white",
-  logoTitle: "text-2xl font-bold text-slate-900",
-logoSubtitle: "mt-1 text-slate-800 text-sm",
-  closeButton: "md:hidden p-2 rounded-md hover:bg-white/50 z-5",
-
+  logoTitle: "text-2xl font-bold",
+  logoSubtitle: "mt-1 text-slate-600 text-sm",
+  closeButton: "md:hidden p-2 rounded-md hover:bg-white/50",
+  
   // Sidebar content
   sidebarContent: "sidebar-content flex-1 overflow-y-auto p-4",
   technologiesHeader: "mb-4 flex items-center justify-between",

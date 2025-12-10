@@ -8,8 +8,8 @@ const Navbar = ({ logoSrc }) => {
     const navigate = useNavigate();
 
     
-    const [menuOpen, setMenuOpen] = useState(false);
-    const [LoggedIn, setLoggedIn] = useState(() => {
+const [menuOpen, setMenuOpen] = useState(false);
+const [LoggedIn, setLoggedIn] = useState(() => {
   try {
     return !!localStorage.getItem("authToken");
   } catch {
