@@ -24,7 +24,7 @@ import {
   Menu,CheckCircle,
   XCircle
 } from 'lucide-react';
-const API_BASE = "http://localhost:4000/";
+const API_BASE = "http://localhost:4000";
 
 
 const Sidebar = () => {
@@ -742,6 +742,8 @@ const handleTechSelect = (techId) => {
         </main>
 
         </div>
+
+        <style>{sidebarStyles.customStyles}</style>
     </div>
 
 
@@ -750,3 +752,5 @@ const handleTechSelect = (techId) => {
 }
 
 export default Sidebar
+
+//  sidebar completed 
