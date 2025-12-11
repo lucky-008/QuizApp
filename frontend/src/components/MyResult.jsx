@@ -203,8 +203,40 @@ const summary = useMemo(() => {
 
 
                                     </div>
+
+                                    <div className={resultStyles.filterStatus}>
+                                        {selectedTechnology=== 'all' ? 'shwing all technologies' : `filtering: ${selectedTechnology}`}
+
+                                    </div>
                                 </div>
                             </div>
+                            {loading ? (
+                                <div className={resultStyles.loadingContainer}>
+                                    <div className={resultStyles.loadingSpinner} />
+                                        <div className={resultStyles.loadingText}>
+                                            Loading results....
+                                        </div>
+                                    </div>
+                            ):(
+                                <>
+                                {Object.entries(grouped).map(([track,items])=>(
+                                    <section key={track} className={resultStyles.trackSection}>
+                                        <h2 className={resultStyles.trackTitle}>{track}Track</h2>
+                                        <div className={resultStyles.resultsGrid}>
+                                            {items.map((r)=>(
+                                                <StripCard key={makeKey(r)} item={r} />
+
+                                            ))}
+                                        </div>
+                                    </section>
+                                ))}
+
+                                
+                                </>
+
+                        
+
+                            )}
         </div>
     </div>
   )
