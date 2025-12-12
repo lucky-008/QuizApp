@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import validator from 'validator';
 
 const TOKEN_EXPIRES_IN='24h';
-const JWT_SECRET='your_jwt_secret_key';
+const JWT_SECRET='e58587706d560dbaf0a89a7168bb2483a008cc98e4e386b91d766164d221817327a178ad2d723934bbf5aadf5f065318268142cccd327aae82246d3a6ae7f352';
 export async function register(req,res){
     try{
         const {name,email,password}=req.body;

@@ -274,13 +274,13 @@ const handleTechSelect = (techId) => {
       submittedRef.current = true;
       toast.info("Submitting your result...");
 
-      const res = await axios.post(`${API_BASE}/api/results`, payload, {
-        headers: {
-          "Content-Type": "application/json",
-          ...getAuthHeader(),
-        },
-        timeout: 10000,
-      });
+     const res = await axios.post(`${API_BASE}/api/results/create`, payload, {
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+  },
+  timeout: 10000,
+});
 
       if (res.data && res.data.success) toast.success("Result submitted successfully!");
       else toast.error("Failed to submit result. Please try again.");

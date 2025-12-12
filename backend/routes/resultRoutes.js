@@ -4,7 +4,7 @@ import { createResult } from '../controllers/resultController.js';
 
 const resultRouter=express.Router();
 
-resultRouter.post('/',authMiddleware,createResult); 
+resultRouter.post('/create',authMiddleware,createResult); 
 resultRouter.get('/list',authMiddleware,createResult);
 
 export default resultRouter;
