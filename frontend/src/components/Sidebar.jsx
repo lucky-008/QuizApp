@@ -255,41 +255,57 @@ const handleTechSelect = (techId) => {
     localStorage.getItem('authToken') || null;
     return token ? {Authorization:`Bearer ${token}`}: {};
   };
-  const submitResult = async () => {
-    if (submittedRef.current) return;
-    if (!selectedTech || !selectedLevel) return;
+ // Sidebar.jsx
 
-    const payload = {
-      title: `${selectedTech.toUpperCase()} - ${
-        selectedLevel.charAt(0).toUpperCase() + selectedLevel.slice(1)
-      } quiz`,
-      technology: selectedTech,
-      level: selectedLevel,
-      totalQuestions: score.total,
-      correct: score.correct,
-      wrong: score.total - score.correct,
-    };
 
-     try {
-      submittedRef.current = true;
-      toast.info("Submitting your result...");
+async function submitResult(resultData) {
+  try {
+    // 1️⃣ Get access token from localStorage
+    let accessToken = localStorage.getItem("accessToken");
 
-     const res = await axios.post(`${API_BASE}/api/results/create`, payload, {
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("authToken")}`,
-  },
-  timeout: 10000,
-});
-
-      if (res.data && res.data.success) toast.success("Result submitted successfully!");
-      else toast.error("Failed to submit result. Please try again.");
-    } catch (err) {
-      submittedRef.current = false;
-      console.error("Error saving result:", err?.response?.data || err.message);
-      toast.error("Could not save result. Check console or network.");
+    if (!accessToken) {
+      console.error("No access token found. Please login.");
+      return;
     }
-  };
+
+    // 2️⃣ Make API call with Authorization header
+    const response = await axios.post(
+      "http://localhost:4000/api/results/create",
+      resultData,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    console.log("Result saved:", response.data);
+    // Optional: show success message in UI
+  } catch (error) {
+    // 3️⃣ Handle 401 errors
+    if (error.response?.status === 401) {
+      console.warn("Access token may have expired. Try refreshing token.");
+      // Optional: call refresh token API here
+      // e.g., const newToken = await refreshAccessToken();
+      //       retry the request with newToken
+    } else {
+      console.error("Error saving result:", error.response?.data || error.message);
+    }
+  }
+}
+
+// Example usage:
+const resultData = {
+  title: "Quiz 1",
+  technology: "JavaScript",
+  level: "Easy",
+  totalQuestions: 10,
+  correct: 8,
+  wrong: 2,
+};
+
+submitResult(resultData);
+
   
 
   useEffect(() => {

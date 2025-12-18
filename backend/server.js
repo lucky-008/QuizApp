@@ -3,10 +3,20 @@ import cors from 'cors';
 import userRouter from './routes/userRoutes.js';
 import resultRouter from './routes/resultRoutes.js';
 
+import authRouter from "./middleware/auth.js";
 import 'dotenv/config'
 import {connectDB} from './config/db.js';
 
 const app=express();
+
+
+
+app.use("/auth", authRouter); // mount the auth routes at /auth
+
+
+
+
+
 const port=4000;
 
 app.use(cors());
